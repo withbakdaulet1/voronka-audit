@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Где обычно ломается воронка</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --card: #fffdf8;
+      --ink: #1c1917;
+      --muted: #6b6560;
+      --line: #e7e0d4;
+      --accent: #0f766e;
+      --accent-soft: #ccfbf1;
+      --check: #0d9488;
+      --shadow: 0 10px 30px rgba(28, 25, 23, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(1200px 400px at 10% -10%, #d1fae5 0%, transparent 55%),
+        var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 20px 64px;
+    }
+
+    header {
+      margin-bottom: 28px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0 0 8px;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      max-width: 42em;
+    }
+
+    .progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 22px 0 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .bar {
+      flex: 1;
+      height: 8px;
+      background: var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--accent);
+      border-radius: inherit;
+      transition: width 0.25s ease;
+    }
+
+    .list {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item:hover {
+      background: #faf7f0;
+    }
+
+    .item label {
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      border: 2px solid #b8b0a4;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    input[type="checkbox"]:checked {
+      background: var(--check);
+      border-color: var(--check);
+    }
+
+    input[type="checkbox"]:checked::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    input[type="checkbox"]:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .title {
+      font-weight: 600;
+      font-size: 1.02rem;
+    }
+
+    .hint {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .item:has(input:checked) .title {
+      text-decoration: line-through;
+      color: #8a847c;
+    }
+
+    .result {
+      margin-top: 16px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 20px 22px;
+    }
+
+    .result h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0 0 8px;
+    }
+
+    .result .next {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+
+    .result .next[hidden] {
+      display: none;
+    }
+
+    .result .next em {
+      font-style: normal;
+      color: var(--muted);
+    }
+
+    .result .body {
+      margin: 0;
+      color: var(--muted);
+      max-width: 42em;
+    }
+
+    footer {
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="badge">Казахстан · малый бизнес</div>
+      <h1>Где обычно ломается воронка</h1>
+      <p class="lead">Восемь типичных дыр: реклама крутится, а заявки пропадают. Отметьте, что уже проверили у себя.</p>
+      <div class="progress">
+        <div class="bar" aria-hidden="true"><span id="bar"></span></div>
+        <span id="count">0 / 8</span>
+      </div>
+    </header>
+
+    <div class="list" id="checklist">
+      <div class="item">
+        <input type="checkbox" id="check-pixel" value="pixel" data-title="Не стоит пиксель Meta">
+        <label for="check-pixel">
+          <span class="title">Не стоит пиксель Meta</span>
+          <span class="hint">Facebook не видит, что происходит на сайте. Реклама крутится вслепую.</span>
+        </label>
+      </div>
+
+      <div class="item">
+        <input type="checkbox" id="check-crm" value="crm" data-title="Заявки с сайта не попадают в CRM">
+        <label for="check-crm">
+          <span class="title">Заявки с сайта не попадают в CRM</span>
+          <span class="hint">Человек оставил номер — а в CRM тишина. Менеджер просто не знает, кому звонить.</span>
+        </label>
+      </div>
+
+      <div class="item">
+        <input type="checkbox" id="check-mobile" value="mobile" data-title="С телефона лендинг неудобный">
+        <label for="check-mobile">
+          <span class="title">С телефона лендинг неудобный</span>
+          <span class="hint">В Казахстане почти все заходят с телефона. Кнопка мелкая, форма уехала за край — человек закрыл вкладку.</span>
+        </label>
+      </div>
+
+      <div class="item">
+        <input type="checkbox" id="check-whatsapp" value="whatsapp" data-title="Нет кнопки «написать в WhatsApp»">
+        <label for="check-whatsapp">
+          <span class="title">Нет кнопки «написать в WhatsApp»</span>
+          <span class="hint">Люди привыкли писать, а не заполнять анкету. Без кнопки часть просто закрывает вкладку.</span>
+        </label>
+      </div>
+
+      <div class="item">
+        <input type="checkbox" id="check-utm" value="utm" data-title="На заявках нет UTM-меток">
+        <label for="check-utm">
+          <span class="title">На заявках нет UTM-меток</span>
+          <span class="hint">Непонятно, какое объявление привело человека. Деньги уходят — а откуда лид, никто не скажет.</span>
+        </label>
+      </div>
+
+      <div class="item">
+        <input type="checkbox" id="check-thankyou" value="thankyou" data-title="После заявки пиксель молчит">
+        <label for="check-thankyou">
+          <span class="title">После заявки пиксель молчит</span>
+          <span class="hint">Страница «спасибо» есть, а событие не стреляет. Meta думает, что заявок нет.</span>
+        </label>
+      </div>
+
+      <div class="item">
+        <input type="checkbox" id="check-homepage" value="homepage" data-title="Реклама ведёт на главную, а не на форму">
+        <label for="check-homepage">
+          <span class="title">Реклама ведёт на главную, а не на форму</span>
+          <span class="hint">Человек кликнул «оставить заявку» — и попал в меню, новости и «о компании». Форму ещё поищи.</span>
+        </label>
+      </div>
+
+      <div class="item">
+        <input type="checkbox" id="check-reports" value="reports" data-title="Отчёты собирают руками в таблицах">
+        <label for="check-reports">
+          <span class="title">Отчёты собирают руками в таблицах</span>
+          <span class="hint">Каждый раз копипаст из кабинетов. Цифры плывут, сравнивать каналы — мучение.</span>
+        </label>
+      </div>
+    </div>
+
+    <section class="result" id="result" aria-live="polite">
+      <h2 id="result-title"></h2>
+      <p class="next" id="result-next"><strong id="result-next-name"></strong> <em>— начни отсюда</em></p>
+      <p class="body" id="result-text"></p>
+    </section>
+
+    <footer>Галочки запоминаются в этом браузере. Сняли — значит, пункт ещё не закрыли.</footer>
+  </div>
+
+  <script>
+    const KEY = "kz-funnel-checklist";
+    const checklist = document.getElementById("checklist");
+    const bar = document.getElementById("bar");
+    const count = document.getElementById("count");
+    const resultTitle = document.getElementById("result-title");
+    const resultText = document.getElementById("result-text");
+    const resultNext = document.getElementById("result-next");
+    const resultNextName = document.getElementById("result-next-name");
+
+    const verdicts = [
+      {
+        max: 2,
+        title: "Воронка держится на честном слове",
+        text: "Почти всё ещё не докручено. Не пытайся закрыть список за вечер — начни с того, что почти ничего не стоит: кнопка в WhatsApp, UTM-метки, ссылка сразу на форму."
+      },
+      {
+        max: 5,
+        title: "Есть, что чинить",
+        text: "Часть уже живая, но деньги всё равно утекают там, где нет трекинга: непонятно, какая реклама привела человека и дошла ли заявка до менеджера."
+      },
+      {
+        max: 8,
+        title: "Неплохая база",
+        text: "Основное закрыто. Дальше уже тонкая настройка: чтобы цифры сходились, а реклама училась на реальных заявках, а не на догадках."
+      }
+    ];
+
+    function boxes() {
+      return [...checklist.querySelectorAll("input[type='checkbox']")];
+    }
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || "{}");
+      boxes().forEach((box) => { box.checked = Boolean(saved[box.value]); });
+    } catch (e) {}
+
+    function sync() {
+      const all = boxes();
+      const done = all.filter((b) => b.checked).length;
+      count.textContent = done + " / " + all.length;
+      bar.style.width = (done / all.length * 100) + "%";
+
+      const verdict = verdicts.find((v) => done <= v.max);
+      resultTitle.textContent = verdict.title;
+      resultText.textContent = verdict.text;
+
+      const firstOpen = all.find((b) => !b.checked);
+      if (firstOpen) {
+        resultNextName.textContent = firstOpen.dataset.title;
+        resultNext.hidden = false;
+      } else {
+        resultNextName.textContent = "";
+        resultNext.hidden = true;
+      }
+
+      const state = {};
+      all.forEach((b) => { state[b.value] = b.checked; });
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }
+
+    checklist.addEventListener("change", sync);
+    sync();
+  </script>
+</body>
+</html>

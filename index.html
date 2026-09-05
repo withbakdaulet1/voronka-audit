@@ -40,6 +40,58 @@
       margin-bottom: 28px;
     }
 
+    .apply-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .apply-row input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--ink);
+      font: inherit;
+      box-shadow: var(--shadow);
+    }
+
+    .apply-row input[type="text"]::placeholder {
+      color: #a39b92;
+    }
+
+    .apply-row input[type="text"]:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-color: var(--accent);
+    }
+
+    .apply-row button {
+      height: 42px;
+      padding: 0 16px;
+      border: none;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .apply-row button:hover {
+      background: #0d5f59;
+    }
+
+    .apply-row button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
     .badge {
       display: inline-block;
       font-size: 12px;
@@ -220,7 +272,11 @@
 <body>
   <div class="wrap">
     <header>
-      <div class="badge">Казахстан · малый бизнес</div>
+      <form class="apply-row" id="biz-form">
+        <input type="text" id="biz-name" placeholder="Название бизнеса или ниша" autocomplete="off">
+        <button type="submit">Применить</button>
+      </form>
+      <div class="badge" id="badge">Казахстан · малый бизнес</div>
       <h1>Где обычно ломается воронка</h1>
       <p class="lead">Восемь типичных дыр: реклама крутится, а заявки пропадают. Отметьте, что уже проверили у себя.</p>
       <div class="progress">
@@ -306,7 +362,12 @@
 
   <script>
     const KEY = "kz-funnel-checklist";
+    const BIZ_KEY = "kz-funnel-business";
+    const DEFAULT_BADGE = "Казахстан · малый бизнес";
     const checklist = document.getElementById("checklist");
+    const bizForm = document.getElementById("biz-form");
+    const bizName = document.getElementById("biz-name");
+    const badge = document.getElementById("badge");
     const bar = document.getElementById("bar");
     const count = document.getElementById("count");
     const resultTitle = document.getElementById("result-title");
@@ -364,6 +425,23 @@
       all.forEach((b) => { state[b.value] = b.checked; });
       localStorage.setItem(KEY, JSON.stringify(state));
     }
+
+    function applyBadge() {
+      const value = bizName.value.trim();
+      localStorage.setItem(BIZ_KEY, value);
+      badge.textContent = value || DEFAULT_BADGE;
+    }
+
+    try {
+      const savedBiz = localStorage.getItem(BIZ_KEY) || "";
+      bizName.value = savedBiz;
+      badge.textContent = savedBiz.trim() || DEFAULT_BADGE;
+    } catch (e) {}
+
+    bizForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      applyBadge();
+    });
 
     checklist.addEventListener("change", sync);
     sync();
